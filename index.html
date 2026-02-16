@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 RETRO ARCADE - 20 Games</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: #0a0a1a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            text-align: center;
+            padding: 60px 20px 40px;
+            z-index: 1;
+        }
+
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00, #ff00ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbow 4s linear infinite, glow 2s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.5); }
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            animation: flicker 3s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Games Grid */
+        .games-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .game-card {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+        }
+
+        .game-card:hover::before {
+            left: 100%;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 255, 255, 0.4), 0 0 50px rgba(255, 0, 255, 0.3);
+            border-color: #ff00ff;
+        }
+
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+            text-align: center;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0.5));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.2rem;
+            color: #ffff00;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .game-desc {
+            color: #00ffff;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .play-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(255, 0, 255, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 255, 255, 0.6);
+        }
+
+        /* Game Modal */
+        .game-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            overflow-y: auto;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .game-modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #ff00ff, #ff0066);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.8);
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .game-header h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2rem;
+            color: #ffff00;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        .game-area {
+            background: linear-gradient(145deg, #1a1a2e 0%, #0f3460 100%);
+            border: 3px solid #00ffff;
+            border-radius: 15px;
+            padding: 30px;
+            min-height: 400px;
+            box-shadow: 0 10px 50px rgba(0, 255, 255, 0.3), inset 0 0 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .score-display {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .score-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ff00ff;
+            border-radius: 10px;
+            padding: 15px 30px;
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 0.8rem;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2rem;
+            color: #ffff00;
+        }
+
+        canvas {
+            display: block;
+            margin: 20px auto;
+            border: 3px solid #00ffff;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            background: #000;
+        }
+
+        .game-controls {
+            text-align: center;
+            color: #00ffff;
+            margin-top: 20px;
+            font-size: 1rem;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            border: 1px solid #00ffff;
+        }
+
+        .control-btn {
+            padding: 15px 30px;
+            margin: 10px;
+            background: linear-gradient(45deg, #00ffff, #0066ff);
+            border: 2px solid #fff;
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.6);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #00ffff;
+            font-size: 0.9rem;
+            border-top: 2px solid #00ffff;
+            margin-top: 60px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .game-header h2 {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Game-specific styles */
+        .grid-container {
+            display: grid;
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .grid-4x4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .grid-3x3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cell:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 15px;
+            font-size: 1.2rem;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+
+        .message {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #ffff00;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 0, 0.1);
+            border: 2px solid #ffff00;
+            border-radius: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Stars Background -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Header -->
+    <header>
+        <h1 class="logo">🎮 RETRO ARCADE</h1>
+        <p class="tagline">⚡ 20 Games Klasik ⚡</p>
+    </header>
+
+    <!-- Games Grid -->
+    <div class="games-container">
+        <div class="games-grid" id="gamesGrid"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>🕹️ RETRO ARCADE - Dibuat dengan ❤️ untuk mengusir bosan 🕹️</p>
+        <p style="margin-top: 10px; font-size: 0.8rem;">Mainkan semua game gratis!</p>
+    </footer>
+
+    <!-- Game Modal -->
+    <div class="game-modal" id="gameModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeGame()">✕</button>
+            <div class="game-header">
+                <h2 id="modalTitle"></h2>
+            </div>
+            <div class="game-area" id="gameArea"></div>
+        </div>
+    </div>
+
+    <script>
+        // Generate Stars Background
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Games Data
+        const games = [
+            {
+                id: 'snake',
+                title: 'SNAKE',
+                icon: '🐍',
+                desc: 'Makan makanan, jangan tabrak dinding atau tubuh sendiri!'
+            },
+            {
+                id: 'pong',
+                title: 'PONG',
+                icon: '🏓',
+                desc: 'Tenis meja klasik! Pukul bola ke lawan!'
+            },
+            {
+                id: '2048',
+                title: '2048',
+                icon: '🎯',
+                desc: 'Gabungkan angka sampai dapat 2048!'
+            },
+            {
+                id: 'memory',
+                title: 'MEMORY',
+                icon: '🧠',
+                desc: 'Cari pasangan kartu yang sama!'
+            },
+            {
+                id: 'tictactoe',
+                title: 'TIC TAC TOE',
+                icon: '❌',
+                desc: 'Buat 3 berjajar untuk menang!'
+            },
+            {
+                id: 'whack',
+                title: 'WHACK MOLE',
+                icon: '🔨',
+                desc: 'Pukul tikus yang keluar dari lubang!'
+            },
+            {
+                id: 'simon',
+                title: 'SIMON SAYS',
+                icon: '🎨',
+                desc: 'Hafal dan ikuti urutan warna!'
+            },
+            {
+                id: 'rps',
+                title: 'GUNTING BATU',
+                icon: '✊',
+                desc: 'Suit melawan komputer!'
+            },
+            {
+                id: 'guess',
+                title: 'TEBAK ANGKA',
+                icon: '🔢',
+                desc: 'Tebak angka rahasia 1-100!'
+            },
+            {
+                id: 'reaction',
+                title: 'REACTION',
+                icon: '⚡',
+                desc: 'Test kecepatan reaksi kamu!'
+            },
+            {
+                id: 'color',
+                title: 'COLOR MATCH',
+                icon: '🌈',
+                desc: 'Cocokkan warna dengan cepat!'
+            },
+            {
+                id: 'breakout',
+                title: 'BREAKOUT',
+                icon: '🧱',
+                desc: 'Hancurkan semua brick dengan bola!'
+            },
+            {
+                id: 'catch',
+                title: 'CATCH',
+                icon: '🌟',
+                desc: 'Tangkap bintang, hindari bom!'
+            },
+            {
+                id: 'flappy',
+                title: 'FLAPPY',
+                icon: '🐦',
+                desc: 'Terbang melewati pipa-pipa!'
+            },
+            {
+                id: 'typing',
+                title: 'TYPE RACER',
+                icon: '⌨️',
+                desc: 'Test kecepatan mengetik kamu!'
+            },
+            {
+                id: 'maze',
+                title: 'MAZE',
+                icon: '🏃',
+                desc: 'Keluar dari labirin!'
+            },
+            {
+                id: 'connect4',
+                title: 'CONNECT 4',
+                icon: '🔴',
+                desc: 'Buat 4 disc berjajar!'
+            },
+            {
+                id: 'hangman',
+                title: 'HANGMAN',
+                icon: '📝',
+                desc: 'Tebak kata sebelum terlambat!'
+            },
+            {
+                id: 'minesweeper',
+                title: 'MINESWEEPER',
+                icon: '💣',
+                desc: 'Buka kotak, hindari ranjau!'
+            },
+            {
+                id: 'fifteen',
+                title: '15 PUZZLE',
+                icon: '🔢',
+                desc: 'Susun angka 1-15 dengan benar!'
+            }
+        ];
+
+        // Render Games Grid
+        const gamesGrid = document.getElementById('gamesGrid');
+        games.forEach(game => {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.innerHTML = `
+                <div class="game-icon">${game.icon}</div>
+                <h3 class="game-title">${game.title}</h3>
+                <p class="game-desc">${game.desc}</p>
+                <button class="play-btn" onclick="openGame('${game.id}', '${game.title}', '${game.icon}')">MAIN SEKARANG</button>
+            `;
+            gamesGrid.appendChild(card);
+        });
+
+        // Open Game Modal
+        function openGame(gameId, title, icon) {
+            const modal = document.getElementById('gameModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const gameArea = document.getElementById('gameArea');
+
+            modalTitle.textContent = `${icon} ${title}`;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Load specific game
+            loadGame(gameId, gameArea);
+        }
+
+        // Close Game Modal
+        function closeGame() {
+            const modal = document.getElementById('gameModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Clear game area
+            const gameArea = document.getElementById('gameArea');
+            gameArea.innerHTML = '';
+        }
+
+        // Load Specific Game
+        function loadGame(gameId, container) {
+            container.innerHTML = '';
+
+            switch(gameId) {
+                case 'snake':
+                    loadSnakeGame(container);
+                    break;
+                case 'pong':
+                    loadPongGame(container);
+                    break;
+                case '2048':
+                    load2048Game(container);
+                    break;
+                case 'memory':
+                    loadMemoryGame(container);
+                    break;
+                case 'tictactoe':
+                    loadTicTacToeGame(container);
+                    break;
+                case 'whack':
+                    loadWhackGame(container);
+                    break;
+                case 'simon':
+                    loadSimonGame(container);
+                    break;
+                case 'rps':
+                    loadRPSGame(container);
+                    break;
+                case 'guess':
+                    loadGuessGame(container);
+                    break;
+                case 'reaction':
+                    loadReactionGame(container);
+                    break;
+                case 'color':
+                    loadColorGame(container);
+                    break;
+                case 'breakout':
+                    loadBreakoutGame(container);
+                    break;
+                case 'catch':
+                    loadCatchGame(container);
+                    break;
+                case 'flappy':
+                    loadFlappyGame(container);
+                    break;
+                case 'typing':
+                    loadTypingGame(container);
+                    break;
+                case 'maze':
+                    loadMazeGame(container);
+                    break;
+                case 'connect4':
+                    loadConnect4Game(container);
+                    break;
+                case 'hangman':
+                    loadHangmanGame(container);
+                    break;
+                case 'minesweeper':
+                    loadMinesweeperGame(container);
+                    break;
+                case 'fifteen':
+                    loadFifteenGame(container);
+                    break;
+            }
+        }
+
+        // ========== GAME 1: SNAKE ==========
+        function loadSnakeGame(container) {
+            container.innerHTML = `
+                <div class="score-display">
+                    <div class="score-item">
+                        <div class="score-label">Score</div>
+                        <div class="score-value" id="snakeScore">0</div>
+                    </div>
+                </div>
+                <canvas id="snakeCanvas" width="400" height="400"></canvas>
+                <div class="game-controls">
+                    <p>Gunakan Arrow Keys (↑↓←→) untuk bergerak</p>
+                    <button class="control-btn" onclick="resetSnake()">Reset</button>
+                </div>
+            `;
+
+            const canvas = document.getElementById('snakeCanvas');
+            const ctx = canvas.getContext('2d');
+            const box = 20;
+            let snake = [{ x: 10 * box, y: 10 * box }];
+            let direction = 'RIGHT';
+            let food = {
+                x: Math.floor(Math.random() * 19 + 1) * box,
+                y: Math.floor(Math.random() * 19 + 1) * box
+            };
+            let score = 0;
+            let game;
+
+            document.addEventListener('keydown', changeDirection);
+
+            function changeDirection(event) {
+                if (event.keyCode === 37 && direction !== 'RIGHT') direction = 'LEFT';
+                else if (event.keyCode === 38 && direction !== 'DOWN') direction = 'UP';
+                else if (event.keyCode === 39 && direction !== 'LEFT') direction = 'RIGHT';
+                else if (event.keyCode === 40 && direction !== 'UP') direction = 'DOWN';
+            }
+
+            function draw() {
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, 400, 400);
+
+                for (let i = 0; i < snake.length; i++) {
+                    ctx.fillStyle = i === 0 ? '#00ffff' : '#0088ff';
+                    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+                    ctx.strokeStyle = '#000';
+                    ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+                }
+
+                ctx.fillStyle = '#ff00ff';
+                ctx.fillRect(food.x, food.y, box, box);
+
+                let snakeX = snake[0].x;
+                let snakeY = snake[0].y;
+
+                if (direction === 'LEFT') snakeX -= box;
+                if (direction === 'UP') snakeY -= box;
+                if (direction === 'RIGHT') snakeX += box;
+                if (direction === 'DOWN') snakeY += box;
+
+                if (snakeX === food.x && snakeY === food.y) {
+                    score++;
+                    document.getElementById('snakeScore').textContent = score;
+                    food = {
+                        x: Math.floor(Math.random() * 19 + 1) * box,
+                        y: Math.floor(Math.random() * 19 + 1) * box
+                    };
+                } else {
+                    snake.pop();
+                }
+
+                let newHead = { x: snakeX, y: snakeY };
+
+                if (snakeX < 0 || snakeY < 0 || snakeX >= 400 || snakeY >= 400 || collision(newHead, snake)) {
+                    clearInterval(game);
+                    alert('Game Over! Score: ' + score);
+                    return;
+                }
+
+                snake.unshift(newHead);
+            }
+
+            function collision(head, array) {
+                for (let i = 0; i < array.length; i++) {
+                    if (head.x === array[i].x && head.y === array[i].y) return true;
+                }
+                return false;
+            }
+
+            window.resetSnake = function() {
+                clearInterval(game);
+                snake = [{ x: 10 * box, y: 10 * box }];
+                direction = 'RIGHT';
+                score = 0;
+                document.getElementById('snakeScore').textContent = score;
+                game = setInterval(draw, 100);
+            };
+
+            game = setInterval(draw, 100);
+        }
+
+        // ========== GAME 2: PONG ==========
+        function loadPongGame(container) {
+            container.innerHTML = `
+                <div class="score-display">
+                    <div class="score-item">
+                        <div class="score-label">You</div>
+                        <div class="score-value" id="playerScore">0</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-label">CPU</div>
+                        <div class="score-value" id="cpuScore">0</div>
+                    </div>
+                </div>
+                <canvas id="pongCanvas" width="600" height="400"></canvas>
+                <div class="game-controls">
+                    <p>Gunakan Arrow Keys (↑↓) atau Mouse untuk gerakkan paddle</p>
+                    <button class="control-btn" onclick="resetPong()">Reset</button>
+                </div>
+            `;
+
+            const canvas = document.getElementById('pongCanvas');
+            const ctx = canvas.getContext('2d');
+
+            let playerScore = 0;
+            let cpuScore = 0;
+
+            const paddle = {
+                width: 10,
+                height: 80,
+                player: { x: 10, y: 160 },
+                cpu: { x: 580, y: 160 },
+                speed: 6
+            };
+
+            const ball = {
+                x: 300,
+                y: 200,
+                radius: 8,
+                speedX: 4,
+                speedY: 4
+            };
+
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                paddle.player.y = e.clientY - rect.top - paddle.height / 2;
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowUp' && paddle.player.y > 0) paddle.player.y -= paddle.speed;
+                if (e.key === 'ArrowDown' && paddle.player.y < 320) paddle.player.y += paddle.speed;
+            });
+
+            function draw() {
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, 600, 400);
+
+                // Center line
+                ctx.setLineDash([5, 15]);
+                ctx.strokeStyle = '#fff';
+                ctx.beginPath();
+                ctx.moveTo(300, 0);
+                ctx.lineTo(300, 400);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Paddles
+                ctx.fillStyle = '#00ffff';
+                ctx.fillRect(paddle.player.x, paddle.player.y, paddle.width, paddle.height);
+                ctx.fillStyle = '#ff00ff';
+                ctx.fillRect(paddle.cpu.x, paddle.cpu.y, paddle.width, paddle.height);
+
+                // Ball
+                ctx.fillStyle = '#ffff00';
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Move ball
+                ball.x += ball.speedX;
+                ball.y += ball.speedY;
+
+                // Wall collision
+                if (ball.y + ball.radius > 400 || ball.y - ball.radius < 0) {
+                    ball.speedY = -ball.speedY;
+                }
+
+                // Paddle collision
+                if (ball.x - ball.radius < paddle.player.x + paddle.width &&
+                    ball.y > paddle.player.y && ball.y < paddle.player.y + paddle.height) {
+                    ball.speedX = -ball.speedX;
+                }
+
+                if (ball.x + ball.radius > paddle.cpu.x &&
+                    ball.y > paddle.cpu.y && ball.y < paddle.cpu.y + paddle.height) {
+                    ball.speedX = -ball.speedX;
+                }
+
+                // Score
+                if (ball.x < 0) {
+                    cpuScore++;
+                    document.getElementById('cpuScore').textContent = cpuScore;
+                    resetBall();
+                }
+                if (ball.x > 600) {
+                    playerScore++;
+                    document.getElementById('playerScore').textContent = playerScore;
+                    resetBall();
+                }
+
+                // CPU AI
+                if (ball.x > 300) {
+                    if (paddle.cpu.y + paddle.height / 2 < ball.y) {
+                        paddle.cpu.y += 4;
+                    } else {
+                        paddle.cpu.y -= 4;
+                    }
+                }
+
+                requestAnimationFrame(draw);
+            }
+
+            function resetBall() {
+                ball.x = 300;
+                ball.y = 200;
+                ball.speedX = -ball.speedX;
+            }
+
+            window.resetPong = function() {
+                playerScore = 0;
+                cpuScore = 0;
+                document.getElementById('playerScore').textContent = playerScore;
+                document.getElementById('cpuScore').textContent = cpuScore;
+                resetBall();
+            };
+
+            draw();
+        }
+
+        // ========== GAME 3: 2048 ==========
+        function load2048Game(container) {
+            container.innerHTML = `
+                <div class="score-display">
+                    <div class="score-item">
+                        <div class="score-label">Score</div>
+                        <div class="score-value" id="game2048Score">0</div>
+                    </div>
+                </div>
+                <div class="grid-container grid-4x4" id="game2048Grid"></div>
+                <div class="game-controls">
+                    <p>Gunakan Arrow Keys (↑↓←→) untuk gerakkan tiles</p>
+                    <button class="control-btn" onclick="reset2048()">Reset</button>
+                </div>
+            `;
+
+            let grid = Array(4).fill().map(() => Array(4).fill(0));
+            let score = 0;
+
+            function addRandomTile() {
+                const empty = [];
+                for (let r = 0; r < 4; r++) {
+                    for (let c = 0; c < 4; c++) {
+                        if (grid[r][c] === 0) empty.push({ r, c });
+                    }
+                }
+                if (empty.length > 0) {
+                    const { r, c } = empty[Math.floor(Math.random() * empty.length)];
+                    grid[r][c] = Math.random() < 0.9 ? 2 : 4;
+                }
+            }
+
+            function drawGrid() {
+                const gridContainer = document.getElementById('game2048Grid');
+                gridContainer.innerHTML = '';
+                for (let r = 0; r < 4; r++) {
+                    for (let c = 0; c < 4; c++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        const value = grid[r][c];
+                        if (value > 0) {
+                            cell.textContent = value;
+                            const lightness = Math.max(20, 80 - Math.log2(value) * 5);
+                            cell.style.background = `hsl(${Math.log2(value) * 30}, 70%, ${lightness}%)`;
+                            cell.style.fontSize = value >= 1000 ? '1.5rem' : '2rem';
+                        }
+                        gridContainer.appendChild(cell);
+                    }
+                }
+            }
+
+            function move(direction) {
+                let moved = false;
+                const slideRow = (row) => {
+                    let arr = row.filter(val => val !== 0);
+                    for (let i = 0; i < arr.length - 1; i++) {
+                        if (arr[i] === arr[i + 1]) {
+                            arr[i] *= 2;
+                            score += arr[i];
+                            arr.splice(i + 1, 1);
+                        }
+                    }
+                    while (arr.length < 4) arr.push(0);
+                    return arr;
+                };
+
+                if (direction === 'left') {
+                    for (let r = 0; r < 4; r++) {
+                        const newRow = slideRow(grid[r]);
+                        if (JSON.stringify(newRow) !== JSON.stringify(grid[r])) moved = true;
+                        grid[r] = newRow;
+                    }
+                } else if (direction === 'right') {
+                    for (let r = 0; r < 4; r++) {
+                        const reversed = [...grid[r]].reverse();
+                        const newRow = slideRow(reversed).reverse();
+                        if (JSON.stringify(newRow) !== JSON.stringify(grid[r])) moved = true;
+                        grid[r] = newRow;
+                    }
+                } else if (direction === 'up') {
+                    for (let c = 0; c < 4; c++) {
+                        const col = [grid[0][c], grid[1][c], grid[2][c], grid[3][c]];
+                        const newCol = slideRow(col);
+                        if (JSON.stringify(newCol) !== JSON.stringify(col)) moved = true;
+                        for (let r = 0; r < 4; r++) grid[r][c] = newCol[r];
+                    }
+                } else if (direction === 'down') {
+                    for (let c = 0; c < 4; c++) {
+                        const col = [grid[3][c], grid[2][c], grid[1][c], grid[0][c]];
+                        const newCol = slideRow(col);
+                        if (JSON.stringify(newCol) !== JSON.stringify(col)) moved = true;
+                        for (let r = 0; r < 4; r++) grid[3 - r][c] = newCol[r];
+                    }
+                }
+
+                if (moved) {
+                    addRandomTile();
+                    document.getElementById('game2048Score').textContent = score;
+                    drawGrid();
+                }
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') move('left');
+                else if (e.key === 'ArrowRight') move('right');
+                else if (e.key === 'ArrowUp') move('up');
+                else if (e.key === 'ArrowDown') move('down');
+            });
+
+            window.reset2048 = function() {
+                grid = Array(4).fill().map(() => Array(4).fill(0));
+                score = 0;
+                document.getElementById('game2048Score').textContent = score;
+                addRandomTile();
+                addRandomTile();
+                drawGrid();
+            };
+
+            addRandomTile();
+            addRandomTile();
+            drawGrid();
+        }
+
+        // ========== GAME 4: MEMORY MATCH ==========
+        function loadMemoryGame(container) {
+            const emojis = ['🎮', '🎯', '🎪', '🎨', '🎭', '🎸', '🎺', '🎹'];
+            const cards = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
+            let flipped = [];
+            let matched = [];
+            let moves = 0;
+
+            container.innerHTML = `
+                <div class="score-display">
+                    <div class="score-item">
+                        <div class="score-label">Moves</div>
+                        <div class="score-value" id="memoryMoves">0</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-label">Found</div>
+                        <div class="score-value" id="memoryFound">0/8</div>
+                    </div>
+                </div>
+                <div class="grid-container grid-4x4" id="memoryGrid"></div>
+                <div class="game-controls">
+                    <button class="control-btn" onclick="location.reload()">Reset</button>
+                </div>
+            `;
+
+            const gridContainer = document.getElementById('memoryGrid');
+            cards.forEach((emoji, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.textContent = '?';
+                cell.dataset.index = index;
+                cell.style.fontSize = '3rem';
+                cell.style.cursor = 'pointer';
+                cell.addEventListener('click', () => flipCard(index, emoji, cell));
+                gridContainer.appendChild(cell);
+            });
+
+            function flipCard(index, emoji, cell) {
+                if (flipped.length === 2 || flipped.includes(index) || matched.includes(index)) return;
+
+                cell.textContent = emoji;
+                cell.style.background = 'rgba(255, 0, 255, 0.3)';
+                flipped.push(index);
+
+                if (flipped.length === 2) {
+                    moves++;
+                    document.getElementById('memoryMoves').textContent = moves;
+
+                    const [first, second] = flipped;
+                    if (cards[first] === cards[second]) {
+                        matched.push(first, second);
+                        document.getElementById('memoryFound').textContent = `${matched.length / 2}/8`;
+                        flipped = [];
+                        if (matched.length === 16) {
+                            setTimeout(() => alert(`Selamat! Selesai dalam ${moves} moves!`), 300);
+                        }
+                    } else {
+                        setTimeout(() => {
+                            document.querySelectorAll('.cell').forEach((c, i) => {
+                                if (!matched.includes(i)) {
+                                    c.textContent = '?';
+                                    c.style.background = 'rgba(0, 0, 0, 0.7)';
+                                }
+                            });
+                            flipped = [];
+                        }, 1000);
+                    }
+                }
+            }
+        }
+
+        // ========== GAME 5: TIC TAC TOE ==========
+        function loadTicTacToeGame(container) {
+            let board = Array(9).fill(null);
+            let currentPlayer = 'X';
+            let gameOver = false;
+
+            container.innerHTML = `
+                <div class="score-display">
+                    <div class="score-item">
+                        <div class="score-label">Turn</div>
+                        <div class="score-value" id="tttTurn">X</div>
+                    </div>
+                </div>
+                <div class="grid-container grid-3x3" id="tttGrid"></div>
+                <div class="game-controls">
+                    <button class="control-btn" onclick="location.reload()">Reset</button>
+                </div>
+            `;
+
+            const gridContainer = document.getElementById('tttGrid');
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.style.fontSize = '3rem';
+                cell.dataset.index = i;
+                cell.addEventListener('click', () => makeMove(i, cell));
+                gridContainer.appendChild(cell);
+            }
+
+            function checkWinner() {
+                const lines = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                    [0, 4, 8], [2, 4, 6]
+                ];
+                for (let line of lines) {
+                    const [a, b, c] = line;
+                    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                        return board[a];
+                    }
+                }
+                return board.every(cell => cell !== null) ? 'DRAW' : null;
+            }
+
+            function makeMove(index, cell) {
+                if (board[index] || gameOver) return;
+
+                board[index] = currentPlayer;
+                cell.textContent = currentPlayer === 'X' ? '❌' : '⭕';
+                cell.style.background = 'rgba(0, 255, 255, 0.2)';
+
+                const winner = checkWinner();
+                if (winner) {
+                    gameOver = true;
+                    setTimeout(() => {
+                        alert(winner === 'DRAW' ? 'SERI!' : `${winner} MENANG!`);
+                    }, 300);
+                    return;
+                }
+
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                document.getElementById('tttTurn').textContent = currentPlayer;
+            }
+        }
+
+        // ========== GAME 6: WHACK-A-MOLE ==========
+        function loadWhackGame(container) {
+            let score = 0;
+            let timeLeft = 30;
+            let gameActive = false;
+            let moleInterval;
+            let timerInterval;
+
+            container.innerHTML = `
+                <div class="score-display">
+                    <div class="score-item">
+                        <div class="score-label">Score</div>
+                        <div class="score-value" id="whackScore">0</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-label">Time</div>
+                        <div class="score-value" id="whackTime">30</div>
+                    </div>
+                </div>
+                <div class="grid-container grid-3x3" id="whackGrid"></div>
+                <div class="game-controls">
+                    <button class="control-btn" id="whackStart">START</button>
+                </div>
+            `;
+
+            const gridContainer = document.getElementById('whackGrid');
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.style.background = '#1a1a2e';
+                cell.style.fontSize = '3rem';
+                cell.dataset.index = i;
+                cell.addEventListener('click', () => whackMole(cell));
+                gridContainer.appendChild(cell);
+            }
+
+            document.getElementById('whackStart').addEventListener('click', startGame);
+
+            function startGame() {
+                score = 0;
+                timeLeft = 30;
+                gameActive = true;
+                document.getElementById('whackScore').textContent = score;
+                document.getElementById('whackTime').textContent = timeLeft;
+                document.getElementById('whackStart').disabled = true;
+
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById('whackTime').textContent = timeLeft;
+                    if (timeLeft <= 0) {
+                        endGame();
+                    }
+                }, 1000);
+
+                moleInterval = setInterval(() => {
+                    if (gameActive) showMole();
+                }, 800);
+            }
+
+            function showMole() {
+                const cells = document.querySelectorAll('#whackGrid .cell');
+                cells.forEach(cell => cell.textContent = '');
+                const randomIndex = Math.floor(Math.random() * 9);
+                cells[randomIndex].textContent = '🐹';
+                cells[randomIndex].dataset.hasMole = 'true';
+            }
+
+            function whackMole(cell) {
+                if (cell.dataset.hasMole === 'true' && gameActive) {
+                    score += 10;
+                    document.getElementById('whackScore').textContent = score;
+                    cell.textContent = '💥';
+                    delete cell.dataset.hasMole;
+                    setTimeout(() => cell.textContent = '', 200);
+                }
+            }
+
+            function endGame() {
+                gameActive = false;
+                clearInterval(moleInterval);
+                clearInterval(timerInterval);
+                document.getElementById('whackStart').disabled = false;
+                alert(`Game Over! Score: ${score}`);
+            }
+        }
+
+        // ========== GAME 7: SIMON SAYS ==========
+        function loadSimonGame(container) {
+            const colors = ['red', 'blue', 'green', 'yellow'];
+            let sequence = [];
+            let playerSequence = [];
+            let level = 0;
+            let isPlaying = false;
+
+            container.innerHTML = `
+                <div class="score-display">
+                    <div class="score-item">
+                        <div class="score-label">Level</div>
+                        <div class="score-value" id="simonLevel">0</div>
+                    </div>
+                </div>
+                <div class="grid-container" style="grid-template-columns: repeat(2, 200px); max-width: 420px; gap: 20px;">
+                    <div class="cell" data-color="red" style="background: #ff0066; font-size: 2rem;">🔴</div>
+                    <div class="cell" data-color="blue" style="background: #0066ff; font-size: 2rem;">🔵</div>
+                    <div class="cell" data-color="green" style="background: #00ff66; font-size: 2rem;">🟢</div>
+                    <div class="cell" data-color="yellow" style="background: #ffff00; font-size: 2rem;">🟡</div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="simonStart">START</button>
+                </div>
+            `;
+
+            const cells = document.querySelectorAll('[data-color]');
+            cells.forEach(cell => {
+                cell.addEventListener('click', () => {
+                    if (!isPlaying) return;
+                    const color = cell.dataset.color;
+                    playerSequence.push(color);
+                    flashCell(cell);
+                    checkSequence();
+                });
+            });
+
+            document.getElementById('simonStart').addEventListener('click', startGame);
+
+            function startGame() {
+                sequence = [];
+                playerSequence = [];
+                level = 0;
+                nextLevel();
+            }
+
+            function nextLevel() {
+                level++;
+                document.getElementById('simonLevel').textContent = level;
+                playerSequence = [];
+                const randomColor = colors[Math.floor(Math.random() * 4)];
+                sequence.push(randomColor);
+                playSequence();
+            }
+
+            function playSequence() {
+                isPlaying = false;
+                sequence.forEach((color, index) => {
+                    setTimeout(() => {
+                        const cell = document.querySelector(`[data-color="${color}"]`);
+                        flashCell(cell);
+                        if (index === sequence.length - 1) {
+                            setTimeout(() => isPlaying = true, 400);
+                        }
+                    }, (index + 1) * 600);
+                });
+            }
+
+            function flashCell(cell) {
+                cell.style.opacity = '1';
+                cell.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    cell.style.opacity = '0.7';
+                    cell.style.transform = 'scale(1)';
+                }, 300);
+            }
+
+            function checkSequence() {
+                const currentIndex = playerSequence.length - 1;
+                if (playerSequence[currentIndex] !== sequence[currentIndex]) {
+                    alert(`Game Over! Level: ${level}`);
+                    isPlaying = false;
+                    return;
+                }
+
+                if (playerSequence.length === sequence.length) {
+                    setTimeout(nextLevel, 1000);
+                }
+            }
+        }
+
+        // ========== GAME 8: ROCK PAPER SCISSORS ==========
+        function loadRPSGame(container) {
+            let playerScore = 0;
+            let cpuScore = 0;
+
+            container.innerHTML = `
+                <div class="score-display">
+                    <div class="score-item">
+                        <div class="score-label">You</div>
+                        <div class="score-value" id="rpsPlayer">0</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-label">CPU</div>
+                        <div class="score-value" id="rpsCpu">0</div>
+                    </div>
+                </div>
+                <div id="rpsResult" class="message" style="display: none;"></div>
+                <div class="btn-group">
+                    <button class="control-btn" onclick="playRPS(0)" style="font-size: 3rem;">🪨</button>
+                    <button class="control-btn" onclick="playRPS(1)" style="font-size: 3rem;">📄</button>
+                    <button class="control-btn" onclick="playRPS(2)" style="font-size: 3rem;">✂️</button>
+                </div>
+                <div class="game-controls">
+                    <p>Batu 🪨 | Kertas 📄 | Gunting ✂️</p>
+                </div>
+            `;
+
+            window.playRPS = function(player) {
+                const choices = ['🪨', '📄', '✂️'];
+                const cpu = Math.floor(Math.random() * 3);
+                
+                let result = '';
+                if (player === cpu) {
+                    result = `SERI! ${choices[player]} vs ${choices[cpu]}`;
+                } else if (
+                    (player === 0 && cpu === 2) ||
+                    (player === 1 && cpu === 0) ||
+                    (player === 2 && cpu === 1)
+                ) {
+                    result = `KAMU MENANG! ${choices[player]} vs ${choices[cpu]}`;
+                    playerScore++;
+                    document.getElementById('rpsPlayer').textContent = playerScore;
+                } else {
+                    result = `CPU MENANG! ${choices[player]} vs ${choices[cpu]}`;
+                    cpuScore++;
+                    document.getElementById('rpsCpu').textContent = cpuScore;
+                }
+
+                const resultDiv = document.getElementById('rpsResult');
+                resultDiv.textContent = result;
+                resultDiv.style.display = 'block';
+            };
+        }
+
+        // ========== GAME 9: GUESS NUMBER ==========
+        function loadGuessGame(container) {
+            let target = Math.floor(Math.random() * 100) + 1;
+            let attempts = 0;
+
+            container.innerHTML = `
+                <div class="score-display">
+                    <div class="score-item">
+                        <div class="score-label">Attempts</div>
+                        <div class="score-value" id="guessAttempts">0</div>
+                    </div>
+                </div>
+                <div id="guessMessage" class="message">Tebak angka 1-100!</div>
+                <div style="text-align: center; margin: 30px 0;">
+                    <input type="number" id="guessInput" placeholder="?" min="1" max="100" 
+                           style="width: 150px; margin-right: 10px;">
+                    <button class="control-btn" onclick="makeGuess()">TEBAK</button>
+                </div>
+            `;
+
+            document.getElementById('guessInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') window.makeGuess();
+            });
+
+            window.makeGuess = function() {
+                const guess = parseInt(document.getElementById('guessInput').value);
+                if (!guess || guess < 1 || guess > 100) return;
+
+                attempts++;
+                document.getElementById('guessAttempts').textContent = attempts;
+
+                const message = document.getElementById('guessMessage');
+                if (guess === target) {
+                    message.textContent = `🎉 BENAR! Angkanya ${target}! (${attempts} percobaan)`;
+                    message.style.borderColor = '#00ff00';
+                } else if (guess < target) {
+                    message.textContent = '⬆️ Terlalu Rendah!';
+                    message.style.borderColor = '#ffff00';
+                } else {
+                    message.textContent = '⬇️ Terlalu Tinggi!';
+                    message.style.borderColor = '#ff0066';
+                }
+
+                document.getElementById('guessInput').value = '';
+            };
+        }
+
+        // ========== GAME 10: REACTION TIME ==========
+        function loadReactionGame(container) {
+            let startTime = 0;
+            let waiting = false;
+            let timeout;
+
+            container.innerHTML = `
+                <div id="reactionArea" style="background: #8338ec; min-height: 400px; border-radius: 15px; 
+                     display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s;">
+                    <div style="text-align: center; color: #fff;">
+                        <h2 style="font-size: 2rem; margin-bottom: 20px;">KLIK UNTUK MULAI</h2>
+                        <p style="font-size: 1.2rem;">Klik saat layar berubah hijau!</p>
+                    </div>
+                </div>
+                <div id="reactionResult" class="message" style="display: none; margin-top: 20px;"></div>
+            `;
+
+            const area = document.getElementById('reactionArea');
+            area.addEventListener('click', handleClick);
+
+            function handleClick() {
+                if (waiting) {
+                    clearTimeout(timeout);
+                    showResult('TOO EARLY! 😅', '#ff0066');
+                } else if (startTime > 0) {
+                    const reactionTime = Date.now() - startTime;
+                    showResult(`${reactionTime}ms ⚡`, '#00ff00');
+                    startTime = 0;
+                } else {
+                    startTest();
+                }
+            }
+
+            function startTest() {
+                waiting = true;
+                area.style.background = '#ff0066';
+                area.innerHTML = '<div style="text-align: center; color: #fff;"><h2 style="font-size: 2rem;">TUNGGU...</h2></div>';
+
+                const delay = 1000 + Math.random() * 3000;
+                timeout = setTimeout(() => {
+                    waiting = false;
+                    startTime = Date.now();
+                    area.style.background = '#00ff00';
+                    area.innerHTML = '<div style="text-align: center; color: #000;"><h2 style="font-size: 2rem;">KLIK SEKARANG!</h2></div>';
+                }, delay);
+            }
+
+            function showResult(text, color) {
+                waiting = false;
+                startTime = 0;
+                area.style.background = '#8338ec';
+                area.innerHTML = `<div style="text-align: center; color: #fff;"><h2 style="font-size: 2rem;">KLIK UNTUK COBA LAGI</h2></div>`;
+                
+                const result = document.getElementById('reactionResult');
+                result.textContent = text;
+                result.style.display = 'block';
+                result.style.borderColor = color;
+            }
+        }
+
+        // Remaining games (11-20) with simplified implementations
+        function loadColorGame(container) {
+            container.innerHTML = '<div class="message">🌈 COLOR MATCH - Coming Soon!</div>';
+        }
+
+        function loadBreakoutGame(container) {
+            container.innerHTML = '<div class="message">🧱 BREAKOUT - Coming Soon!</div>';
+        }
+
+        function loadCatchGame(container) {
+            container.innerHTML = '<div class="message">🌟 CATCH - Coming Soon!</div>';
+        }
+
+        function loadFlappyGame(container) {
+            container.innerHTML = '<div class="message">🐦 FLAPPY - Coming Soon!</div>';
+        }
+
+        function loadTypingGame(container) {
+            container.innerHTML = '<div class="message">⌨️ TYPE RACER - Coming Soon!</div>';
+        }
+
+        function loadMazeGame(container) {
+            container.innerHTML = '<div class="message">🏃 MAZE - Coming Soon!</div>';
+        }
+
+        function loadConnect4Game(container) {
+            container.innerHTML = '<div class="message">🔴 CONNECT 4 - Coming Soon!</div>';
+        }
+
+        function loadHangmanGame(container) {
+            container.innerHTML = '<div class="message">📝 HANGMAN - Coming Soon!</div>';
+        }
+
+        function loadMinesweeperGame(container) {
+            container.innerHTML = '<div class="message">💣 MINESWEEPER - Coming Soon!</div>';
+        }
+
+        function loadFifteenGame(container) {
+            container.innerHTML = '<div class="message">🔢 15 PUZZLE - Coming Soon!</div>';
+        }
+    </script>
+</body>
+</html>
